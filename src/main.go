@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/jjmarsha/NormsBackend/pkg/post"
+	"github.com/jjmarsha/NormsBackend/pkg/profile"
 	"github.com/jjmarsha/NormsBackend/pkg/session"
 )
 
@@ -31,14 +31,15 @@ func main() {
 		Uemail: "**noCurr**",
 	}
 
-	// Signup
-	mux.HandleFunc("/signup", session.SignupHandler(db, &CurrUser))
+	// // Signup
+	// mux.HandleFunc("/signup", session.SignupHandler(db, &CurrUser))
 
-	//Login
-	mux.HandleFunc("/login", session.LoginHandler(db, &CurrUser))
+	// //Login
+	// mux.HandleFunc("/login", session.LoginHandler(db, &CurrUser))
 
-	//Gets the post. Will relocate
-	mux.HandleFunc("/viewpost", post.Handler(db, &CurrUser))
+	// //Gets the post. Will relocate
+	// mux.HandleFunc("/viewpost", post.Handler(db, &CurrUser))
+	mux.HandleFunc("/symptoms", profile.SymptomHandler(db, &CurrUser))
 
 	fmt.Println("Starting server on port 8080")
 	err = http.ListenAndServe(":8080", mux)
