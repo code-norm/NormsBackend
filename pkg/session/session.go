@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 
 	cL "github.com/jjmarsha/NormsBackend/pkg/classes"
 	"golang.org/x/crypto/bcrypt"
@@ -24,6 +25,14 @@ func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("signup request incoming")
 		fmt.Println(r.Form)
+		fmt.Println("path", r.URL.Path)
+		fmt.Println("scheme", r.URL.Scheme)
+		fmt.Println(r.Form["url_long"])
+		for k, v := range r.Form {
+			fmt.Println("key:", k)
+			fmt.Println("val:", strings.Join(v, ""))
+		}
+
 		r.ParseForm()
 		newUser := cL.User{
 			Uname:  r.FormValue("username"), // Data from the form
