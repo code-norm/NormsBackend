@@ -96,7 +96,7 @@ func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 		*u = newUser
 
 		surv := u.Uname + "survey"
-		injection := "CREATE TABLE" + surv + "(gluten VARCHAR(60), sugar VARCHAR(60), satfat VARCHAR(60), alchohol VARCHAR(60), refgrains VARCHAR(60), msg VARCHAR(60), salt VARCHAR(60))"
+		injection := "CREATE TABLE " + surv + " (gluten VARCHAR(60), sugar VARCHAR(60), satfat VARCHAR(60), alchohol VARCHAR(60), refgrains VARCHAR(60), msg VARCHAR(60), salt VARCHAR(60))"
 		// Creates new survey entry for new users
 		_, err = db.Query(injection)
 		if err != nil {
