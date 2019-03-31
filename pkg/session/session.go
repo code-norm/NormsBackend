@@ -2,6 +2,7 @@ package session
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -135,6 +136,15 @@ func LoginHandler(db *sql.DB, u *User) http.HandlerFunc {
 		fmt.Fprintf(w, "Login success")
 		u.Uemail = email
 		u.Uname = username
+
+		js, err := json.Marshal(u)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
 	}
 	return http.HandlerFunc(fn)
 }
