@@ -9,6 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 	cL "github.com/jjmarsha/NormsBackend/pkg/classes"
+	"github.com/jjmarsha/NormsBackend/pkg/notif"
 	"github.com/jjmarsha/NormsBackend/pkg/profile"
 	"github.com/jjmarsha/NormsBackend/pkg/session"
 	survey "github.com/jjmarsha/NormsBackend/pkg/survey"
@@ -62,6 +63,9 @@ func main() {
 
 	//Sends Survey
 	router.HandleFunc("/postsurvey", survey.SurveyHandler(db, &CurrUser))
+
+	//Sends push notif
+	router.HandleFunc("/notif", notif.NotifHandler(db, &CurrUser))
 
 	port := os.Getenv("PORT") //Get port from .env file, we did not specify any port so this should return an empty string when tested locally
 	if port == "" {
