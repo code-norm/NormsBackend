@@ -23,6 +23,7 @@ func IsEmpty(data string) bool {
 func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("signup request incoming")
+		test(r)
 		r.ParseForm()
 		newUser := cL.User{
 			Uname:  r.FormValue("username"), // Data from the form
@@ -193,4 +194,12 @@ func rowExists(query string, db *sql.DB, entry string) bool {
 		fmt.Printf("error checking if row exist")
 	}
 	return exists
+}
+
+func test(r *http.Request) {
+	r.ParseForm()
+
+	for key, value := range r.Form {
+		fmt.Printf("%s = s%\n", key, value)
+	}
 }
