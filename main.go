@@ -65,7 +65,7 @@ func main() {
 	router.HandleFunc("/postsurvey", survey.SurveyHandler(db, &CurrUser))
 
 	//Sends push notif
-	router.HandleFunc("/notif", notif.NotifHandler(db, &CurrUser))
+	router.HandleFunc("/notif", notif.PushHandler(db, &CurrUser))
 
 	port := os.Getenv("PORT") //Get port from .env file, we did not specify any port so this should return an empty string when tested locally
 	if port == "" {
