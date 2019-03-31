@@ -25,3 +25,14 @@ type Symptom struct {
 	Checked       string
 	Notifications string
 }
+
+type Survey struct {
+	Date      string
+	Gluten    string
+	Sugar     string
+	Satfats   string
+	Alcohol   string
+	Refgrains string
+	Msg       string
+	Salt      string
+}

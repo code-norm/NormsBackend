@@ -11,6 +11,7 @@ import (
 	cL "github.com/jjmarsha/NormsBackend/pkg/classes"
 	"github.com/jjmarsha/NormsBackend/pkg/profile"
 	"github.com/jjmarsha/NormsBackend/pkg/session"
+	survey "github.com/jjmarsha/NormsBackend/pkg/survey"
 )
 
 func main() {
@@ -58,6 +59,9 @@ func main() {
 
 	//Gets medical records
 	router.HandleFunc("/getmed", profile.MedSender(db, &CurrUser))
+
+	//Sends Survey
+	router.HandleFunc("/postsurvey", survey.SurveyHandler(db, &CurrUser))
 
 	port := os.Getenv("PORT") //Get port from .env file, we did not specify any port so this should return an empty string when tested locally
 	if port == "" {
