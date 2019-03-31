@@ -52,14 +52,18 @@ func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 		}
 
 		// Checks for existing username
-		if err1 := db.QueryRow("SELECT * FROM userinfo WHERE username=?", newUser.Uname); err1 == nil {
-			fmt.Fprintf(w, "username already exists")
-			return
-		}
+		// if err1 := db.QueryRow("SELECT * FROM userinfo WHERE username=?", newUser.Uname); err1 == nil {
+		// 	fmt.Fprintf(w, "username already exists")
+		// 	return
+		// }
 
-		// Checks for existing email
-		if err2 := db.QueryRow("SELECT * FROM userinfo WHERE email=?", newUser.Uemail); err2 == nil {
-			fmt.Fprintf(w, "Email already in used")
+		// // Checks for existing email
+		// if err2 := db.QueryRow("SELECT * FROM userinfo WHERE email=?", newUser.Uemail); err2 == nil {
+		// 	fmt.Fprintf(w, "Email already in used")
+		// 	return
+		// }
+		if rowExists("SELECT * FROM userinfo", db, &newUser) {
+			fmt.Fprintf(w, "Email or Username in use")
 			return
 		}
 
@@ -174,4 +178,14 @@ func LogoutHandler(u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 	}
 	return http.HandlerFunc(fn)
+}
+
+func rowExists(query string, db *sql.DB, u *cL.User) bool {
+	var exists bool
+	query = fmt.Sprintf("SELECT exists (%s)", query)
+	err := db.QueryRow(query, u.Uname, u.Uemail).Scan(&exists)
+	if err != nil && err != sql.ErrNoRows {
+		fmt.Printf("error checking if row exist")
+	}
+	return exists
 }
