@@ -34,13 +34,6 @@ func SymptomHandler(db *sql.DB, u *session.User) http.HandlerFunc {
 			fmt.Println(err)
 			return
 		}
-		_, err = db.Query("UPDATE userinfo SET vision = ? WHERE username = ?", checkTrue(symptoms[1]),
-			u.Uname)
-		if err != nil {
-			// If there is any issue with inserting into the database, return a 500 error
-			fmt.Println(err)
-			return
-		}
 		_, err = db.Query("UPDATE userinfo SET muscle = ? WHERE username = ?", checkTrue(symptoms[2]),
 			u.Uname)
 		if err != nil {
@@ -98,6 +91,86 @@ func SymptomHandler(db *sql.DB, u *session.User) http.HandlerFunc {
 			return
 		}
 		_, err = db.Query("UPDATE userinfo SET judgement  = ? WHERE username = ?", checkTrue(symptoms[10]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////
+
+		_, err = db.Query("UPDATE notif SET speech = ? WHERE username = ?", symptoms[0].Notifications,
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+		_, err = db.Query("UPDATE notif SET vision = ? WHERE username = ?", symptoms[1].Notifications,
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+		_, err = db.Query("UPDATE notif SET muscle = ? WHERE username = ?", symptoms[2].Notifications,
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+		_, err = db.Query("UPDATE notif SET bladder = ? WHERE username = ?", symptoms[3].Notifications,
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+		_, err = db.Query("UPDATE notif SET depression = ? WHERE username = ?", symptoms[4].Notifications,
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+		_, err = db.Query("UPDATE notif SET memory = ? WHERE username = ?", symptoms[5].Notifications,
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+		_, err = db.Query("UPDATE notif SET attention = ? WHERE username = ?", symptoms[6].Notifications,
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+		_, err = db.Query("UPDATE notif SET mood = ? WHERE username = ?", symptoms[7].Notifications,
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+		_, err = db.Query("UPDATE notif SET reasoning = ? WHERE username = ?", symptoms[8].Notifications,
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+		_, err = db.Query("UPDATE notif SET dizziness = ? WHERE username = ?", symptoms[9].Notifications,
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+		_, err = db.Query("UPDATE notif SET judgement  = ? WHERE username = ?", symptoms[10].Notifications,
 			u.Uname)
 		if err != nil {
 			// If there is any issue with inserting into the database, return a 500 error
