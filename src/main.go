@@ -5,15 +5,19 @@ import (
 	"fmt"
 	"net/http"
 
+	_ "github.com/go-sql-driver/mysql"
+	"github.com/gorilla/mux"
 	"github.com/jjmarsha/NormsBackend/pkg/profile"
 	"github.com/jjmarsha/NormsBackend/pkg/session"
 )
 
 func main() {
 
-	mux := http.NewServeMux()
+	router := mux.NewRouter()
 
-	db, err := sql.Open("mysql", "root:root@tcp(35.197.6.145:3306)/userinfo")
+	fmt.Println("Starting server...")
+
+	db, err := sql.Open("mysql", "root:root@tcp(35.202.9.105:3306)/users")
 	if err != nil {
 		panic(err.Error()) // proper error handling instead of panic
 	}
@@ -26,23 +30,30 @@ func main() {
 		panic(err.Error()) // proper error handling instead of panic
 	}
 
+	fmt.Println("Server connected")
+
 	CurrUser := session.User{
-		Uname:  "**noCurr**",
-		Uemail: "**noCurr**",
+		Uname:  "NULL",
+		Uemail: "NULL",
 	}
 
-	// // Signup
-	// mux.HandleFunc("/signup", session.SignupHandler(db, &CurrUser))
+	// Signup
+	router.HandleFunc("/signup", session.SignupHandler(db, &CurrUser))
 
-	// //Login
-	// mux.HandleFunc("/login", session.LoginHandler(db, &CurrUser))
+	//Login
+	router.HandleFunc("/login", session.LoginHandler(db, &CurrUser))
 
-	// //Gets the post. Will relocate
-	// mux.HandleFunc("/viewpost", post.Handler(db, &CurrUser))
-	mux.HandleFunc("/symptoms", profile.SymptomHandler(db, &CurrUser))
+	router.HandleFunc("/logout", session.LogoutHandler(&CurrUser))
+
+	//Push user's symptoms onto the struct and database
+	router.HandleFunc("/postsymptoms", profile.SymptomHandler(db, &CurrUser))
+
+	//Get user's symptoms
+	router.HandleFunc("/getsymptoms", profile.SymptomSender(db, &CurrUser))
 
 	fmt.Println("Starting server on port 8080")
-	err = http.ListenAndServe(":8080", mux)
+
+	err = http.ListenAndServe(":8080", router)
 	if err != nil {
 		fmt.Println(err)
 	}
