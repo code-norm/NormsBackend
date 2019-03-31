@@ -138,7 +138,7 @@ func LoginHandler(db *sql.DB, u *User) http.HandlerFunc {
 			fmt.Fprintf(w, "wrong password")
 			return
 		}
-		fmt.Fprintf(w, "Login success")
+
 		u.Uemail = email
 		u.Uname = username
 
