@@ -217,7 +217,7 @@ func MedHandler(db *sql.DB, u *session.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		decoder := json.NewDecoder(r.Body)
 		var mD Med
-		err1 := decoder.Decode(mD)
+		err1 := decoder.Decode(&mD)
 		if err1 != nil {
 			panic(err1)
 		}

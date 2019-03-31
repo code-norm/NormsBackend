@@ -38,7 +38,7 @@ func main() {
 		Uemail: "NULL",
 	}
 
-	// Signup
+	//Signup
 	router.HandleFunc("/signup", session.SignupHandler(db, &CurrUser))
 
 	//Login
