@@ -27,7 +27,7 @@ type User struct {
 
 type Usertemp struct {
 	Username string
-	email    string
+	Email    string
 }
 
 type Symptom struct {
@@ -144,7 +144,7 @@ func LoginHandler(db *sql.DB, u *User) http.HandlerFunc {
 
 		userTemp := Usertemp{
 			Username: username,
-			email:    email,
+			Email:    email,
 		}
 
 		js, err := json.Marshal(userTemp)
