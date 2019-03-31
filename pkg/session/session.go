@@ -21,6 +21,13 @@ func IsEmpty(data string) bool {
 type User struct {
 	Uname  string
 	Uemail string
+	Symp   [12]Symptom
+}
+
+type Symptom struct {
+	Name          string
+	Checked       string
+	Notifications string
 }
 
 //SignupHandler handles signup
@@ -56,13 +63,13 @@ func SignupHandler(db *sql.DB, u *User) http.HandlerFunc {
 		}
 
 		// Checks for existing username
-		if err1 := db.QueryRow("SELECT * FROM users WHERE username=?", newUser.Uname); err1 != nil {
+		if err1 := db.QueryRow("SELECT * FROM userinfo WHERE username=?", newUser.Uname); err1 == nil {
 			fmt.Fprintf(w, "username already exists")
 			return
 		}
 
 		// Checks for existing email
-		if err2 := db.QueryRow("SELECT * FROM users WHERE email=?", newUser.Uemail); err2 != nil {
+		if err2 := db.QueryRow("SELECT * FROM userinfo WHERE email=?", newUser.Uemail); err2 == nil {
 			fmt.Fprintf(w, "Email already in used")
 			return
 		}
@@ -73,7 +80,7 @@ func SignupHandler(db *sql.DB, u *User) http.HandlerFunc {
 		fmt.Println("password encrypted")
 
 		// Inserts new record
-		_, err = db.Query("INSERT INTO users (username, password, email) VALUES(?, ?, ?)",
+		_, err = db.Query("INSERT INTO userinfo (username, password, email) VALUES(?, ?, ?)",
 			newUser.Uname, string(encryptedPwd), newUser.Uemail)
 		if err != nil {
 			// If there is any issue with inserting into the database, return a 500 error
@@ -107,7 +114,7 @@ func LoginHandler(db *sql.DB, u *User) http.HandlerFunc {
 		var username string
 
 		// Searches for email and grabs encrypted password
-		row := db.QueryRow("SELECT password,username FROM users WHERE email=?", email)
+		row := db.QueryRow("SELECT password,username FROM userinfo WHERE email=?", email)
 		switch err := row.Scan(&encryptedPwd, &username); err {
 		case sql.ErrNoRows:
 			fmt.Fprintf(w, "No users with email")
@@ -128,6 +135,14 @@ func LoginHandler(db *sql.DB, u *User) http.HandlerFunc {
 		fmt.Fprintf(w, "Login success")
 		u.Uemail = email
 		u.Uname = username
+	}
+	return http.HandlerFunc(fn)
+}
+
+func LogoutHandler(u *User) http.HandlerFunc {
+	u.Uname = "NULL"
+	u.Uemail = "NULL"
+	fn := func(w http.ResponseWriter, r *http.Request) {
 	}
 	return http.HandlerFunc(fn)
 }

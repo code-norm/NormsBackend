@@ -2,14 +2,32 @@
 
 
 [[projects]]
+  name = "github.com/go-sql-driver/mysql"
+  packages = ["."]
+  revision = "72cd26f257d44c1114970e19afddcd812016007e"
+  version = "v1.4.1"
+
+[[projects]]
+  name = "github.com/gorilla/mux"
+  packages = ["."]
+  revision = "a7962380ca08b5a188038c69871b8d3fbdf31e89"
+  version = "v1.7.0"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["bcrypt","blowfish"]
   revision = "a5d413f7728c81fb97d96a2b722368945f651e78"
 
+[[projects]]
+  name = "google.golang.org/appengine"
+  packages = ["cloudsql"]
+  revision = "54a98f90d1c46b7731eb8fb305d2a321c30ef610"
+  version = "v1.5.0"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a0b0b08de3e66a9e5558eaca40ab59cab7d27dbafe9eaf33270a314437c749a0"
+  inputs-digest = "60c4fe39905bab84c4e082db9647ef72d5140a959318aa40767521938c426fb3"
   solver-name = "gps-cdcl"
   solver-version = 1

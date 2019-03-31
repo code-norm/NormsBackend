@@ -2,9 +2,9 @@ package profile
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	"github.com/jjmarsha/NormsBackend/pkg/session"
 )
@@ -12,112 +12,121 @@ import (
 //SymptomHandler receives the symptoms chosen to add to table
 func SymptomHandler(db *sql.DB, u *session.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		symptoms := make([]bool, 11)
-		r.ParseForm()
-		for i := 0; i < 11; i++ {
-			if r.FormValue(strconv.Itoa(i)) == "1" {
-				symptoms[i] = true
-			}
+		decoder := json.NewDecoder(r.Body)
+		var symptoms [12]session.Symptom
+		err1 := decoder.Decode(&symptoms)
+		if err1 != nil {
+			panic(err1)
 		}
+		u.Symp = symptoms
 
-		if symptoms[0] {
-			_, err := db.Query("UPDATE userinfo SET speech = '1' WHERE username = ?",
-				u.Uname)
-			if err != nil {
-				// If there is any issue with inserting into the database, return a 500 error
-				fmt.Println(err)
-				return
-			}
+		_, err := db.Query("UPDATE userinfo SET speech = ? WHERE username = ?", checkTrue(symptoms[0]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
 		}
-		if symptoms[1] {
-			_, err := db.Query("UPDATE userinfo SET vision = '1' WHERE username = ?",
-				u.Uname)
-			if err != nil {
-				// If there is any issue with inserting into the database, return a 500 error
-				fmt.Println(err)
-				return
-			}
+		_, err = db.Query("UPDATE userinfo SET vision = ? WHERE username = ?", checkTrue(symptoms[1]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
 		}
-		if symptoms[2] {
-			_, err := db.Query("UPDATE userinfo SET muscle = '1' WHERE username = ?",
-				u.Uname)
-			if err != nil {
-				// If there is any issue with inserting into the database, return a 500 error
-				fmt.Println(err)
-				return
-			}
+		_, err = db.Query("UPDATE userinfo SET vision = ? WHERE username = ?", checkTrue(symptoms[1]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
 		}
-		if symptoms[3] {
-			_, err := db.Query("UPDATE userinfo SET bladder = '1' WHERE username = ?",
-				u.Uname)
-			if err != nil {
-				// If there is any issue with inserting into the database, return a 500 error
-				fmt.Println(err)
-				return
-			}
+		_, err = db.Query("UPDATE userinfo SET muscle = ? WHERE username = ?", checkTrue(symptoms[2]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
 		}
-		if symptoms[4] {
-			_, err := db.Query("UPDATE userinfo SET depression = '1' WHERE username = ?",
-				u.Uname)
-			if err != nil {
-				// If there is any issue with inserting into the database, return a 500 error
-				fmt.Println(err)
-				return
-			}
+		_, err = db.Query("UPDATE userinfo SET bladder = ? WHERE username = ?", checkTrue(symptoms[3]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
 		}
-		if symptoms[5] {
-			_, err := db.Query("UPDATE userinfo SET memory = '1' WHERE username = ?",
-				u.Uname)
-			if err != nil {
-				// If there is any issue with inserting into the database, return a 500 error
-				fmt.Println(err)
-				return
-			}
+		_, err = db.Query("UPDATE userinfo SET depression = ? WHERE username = ?", checkTrue(symptoms[4]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
 		}
-		if symptoms[6] {
-			_, err := db.Query("UPDATE userinfo SET attention = '1' WHERE username = ?",
-				u.Uname)
-			if err != nil {
-				// If there is any issue with inserting into the database, return a 500 error
-				fmt.Println(err)
-				return
-			}
+		_, err = db.Query("UPDATE userinfo SET memory = ? WHERE username = ?", checkTrue(symptoms[5]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
 		}
-		if symptoms[7] {
-			_, err := db.Query("UPDATE userinfo SET mood = '1' WHERE username = ?",
-				u.Uname)
-			if err != nil {
-				// If there is any issue with inserting into the database, return a 500 error
-				fmt.Println(err)
-				return
-			}
+		_, err = db.Query("UPDATE userinfo SET attention = ? WHERE username = ?", checkTrue(symptoms[6]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
 		}
-		if symptoms[8] {
-			_, err := db.Query("UPDATE userinfo SET reasoning = '1' WHERE username = ?",
-				u.Uname)
-			if err != nil {
-				// If there is any issue with inserting into the database, return a 500 error
-				fmt.Println(err)
-				return
-			}
+		_, err = db.Query("UPDATE userinfo SET mood = ? WHERE username = ?", checkTrue(symptoms[7]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
 		}
-		if symptoms[9] {
-			_, err := db.Query("UPDATE userinfo SET dizziness = '1' WHERE username = ?",
-				u.Uname)
-			if err != nil {
-				// If there is any issue with inserting into the database, return a 500 error
-				fmt.Println(err)
-				return
-			}
+		_, err = db.Query("UPDATE userinfo SET reasoning = ? WHERE username = ?", checkTrue(symptoms[8]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
 		}
-		if symptoms[10] {
-			_, err := db.Query("UPDATE userinfo SET judgement  = '1' WHERE username = ?",
-				u.Uname)
-			if err != nil {
-				// If there is any issue with inserting into the database, return a 500 error
-				fmt.Println(err)
-				return
-			}
+		_, err = db.Query("UPDATE userinfo SET dizziness = ? WHERE username = ?", checkTrue(symptoms[9]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+		_, err = db.Query("UPDATE userinfo SET judgement  = ? WHERE username = ?", checkTrue(symptoms[10]),
+			u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
 		}
 	}
+	return http.HandlerFunc(fn)
+}
+
+func SymptomSender(db *sql.DB, u *session.User) http.HandlerFunc {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+
+		js, err := json.Marshal(u.Symp)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
+
+	}
+	return http.HandlerFunc(fn)
+}
+
+func checkTrue(s session.Symptom) int {
+	if s.Checked == "true" {
+		return 1
+	}
+	return 0
 }
