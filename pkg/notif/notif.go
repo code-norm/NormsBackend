@@ -21,9 +21,9 @@ type Payload struct {
 	ContentAvailable bool   `json:"_contentAvailable"`
 }
 
-func NotifHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
+func PushHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		data := Payload{
+		symData := Payload{
 			To:               "ExponentPushToken[9UQs5SDdw--zIpwg6hRok8]",
 			Badge:            0,
 			Title:            "Fatigue Check",
@@ -32,7 +32,16 @@ func NotifHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 			Category:         "@dnguyen1289/code-norm:rate",
 			ContentAvailable: true,
 		}
-		payloadBytes, err := json.Marshal(data)
+		medData := Payload{
+			To:               "ExponentPushToken[9UQs5SDdw--zIpwg6hRok8]",
+			Badge:            0,
+			Title:            "Medicine Reminder",
+			Body:             "",
+			ExperienceID:     "@dnguyen1289/code-norm",
+			Category:         "@dnguyen1289/code-norm:reminder",
+			ContentAvailable: true,
+		}
+		payloadBytes, err := json.Marshal(symData)
 		if err != nil {
 			panic(err.Error())
 			return
@@ -47,6 +56,27 @@ func NotifHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 		req.Header.Set("Content-Type", "application/json")
 
 		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			panic(err.Error())
+			return
+		}
+		defer resp.Body.Close()
+
+		payloadBytes, err = json.Marshal(medData)
+		if err != nil {
+			panic(err.Error())
+			return
+		}
+		body = bytes.NewReader(payloadBytes)
+		req, err = http.NewRequest("POST", "https://exp.host/--/api/v2/push/send", body)
+		if err != nil {
+			panic(err.Error())
+			return
+		}
+
+		req.Header.Set("Content-Type", "application/json")
+
+		resp, err = http.DefaultClient.Do(req)
 		if err != nil {
 			panic(err.Error())
 			return
