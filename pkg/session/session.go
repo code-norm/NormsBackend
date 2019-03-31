@@ -97,7 +97,7 @@ func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 
 		surv := u.Uname + "survey"
 		// Creates new survey entry for new users
-		_, err = db.Query("CREATE TABLE %s (gluten VARCHAR(60), sugar VARCHAR(60), satfat VARCHAR(60), alchohol VARCHAR(60), refgrains VARCHAR(60), msg VARCHAR(60), salt VARCHAR(60)", surv)
+		_, err = db.Query("CREATE TABLE %s (gluten VARCHAR(60), sugar VARCHAR(60), satfat VARCHAR(60), alchohol VARCHAR(60), refgrains VARCHAR(60), msg VARCHAR(60), salt VARCHAR(60))", surv)
 		if err != nil {
 			// If there is any issue with inserting into the database, return a 500 error
 			fmt.Println(err)
