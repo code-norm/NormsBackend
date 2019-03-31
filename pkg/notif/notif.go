@@ -34,19 +34,22 @@ func NotifHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 		}
 		payloadBytes, err := json.Marshal(data)
 		if err != nil {
-			// handle err
+			panic(err.Error())
+			return
 		}
 		body := bytes.NewReader(payloadBytes)
 		req, err := http.NewRequest("POST", "https://exp.host/--/api/v2/push/send", body)
 		if err != nil {
-			// handle err
+			panic(err.Error())
+			return
 		}
 
 		req.Header.Set("Content-Type", "application/json")
 
 		resp, err := http.DefaultClient.Do(req)
 		if err != nil {
-			// handle err
+			panic(err.Error())
+			return
 		}
 		defer resp.Body.Close()
 	}
