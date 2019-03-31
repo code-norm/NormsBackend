@@ -6,9 +6,7 @@ import (
 	"bytes"
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"net/http"
-	"time"
 
 	cL "github.com/jjmarsha/NormsBackend/pkg/classes"
 )
@@ -39,22 +37,18 @@ func NotifHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 			// handle err
 		}
 		body := bytes.NewReader(payloadBytes)
-
-		for x := range time.Tick(30 * time.Second) {
-			req, err := http.NewRequest("POST", "https://exp.host/--/api/v2/push/send", body)
-			if err != nil {
-				// handle err
-			}
-
-			req.Header.Set("Content-Type", "application/json")
-
-			resp, err := http.DefaultClient.Do(req)
-			if err != nil {
-				// handle err
-			}
-			defer resp.Body.Close()
-			fmt.Println(x)
+		req, err := http.NewRequest("POST", "https://exp.host/--/api/v2/push/send", body)
+		if err != nil {
+			// handle err
 		}
+
+		req.Header.Set("Content-Type", "application/json")
+
+		resp, err := http.DefaultClient.Do(req)
+		if err != nil {
+			// handle err
+		}
+		defer resp.Body.Close()
 	}
 	return http.HandlerFunc(fn)
 }
