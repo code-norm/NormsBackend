@@ -113,6 +113,15 @@ func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 			fmt.Println(err)
 			return
 		}
+
+		js, err := json.Marshal(newUser.uName)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
 	}
 
 	return http.HandlerFunc(fn)
