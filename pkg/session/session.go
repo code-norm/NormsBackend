@@ -22,7 +22,7 @@ func IsEmpty(data string) bool {
 //SignupHandler handles signup
 func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("signup request incoming")
+
 		r.ParseForm()
 		newUser := cL.User{
 			Uname:  r.FormValue("username"), // Data from the form
@@ -101,7 +101,6 @@ func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 			fmt.Println(err)
 			return
 		}
-		fmt.Println("signup completed")
 		*u = newUser
 
 		surv := u.Uname + "survey"
@@ -113,6 +112,15 @@ func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 			fmt.Println(err)
 			return
 		}
+
+		js, err := json.Marshal(newUser)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
 	}
 
 	return http.HandlerFunc(fn)
@@ -193,4 +201,12 @@ func rowExists(query string, db *sql.DB, entry string) bool {
 		fmt.Printf("error checking if row exist")
 	}
 	return exists
+}
+
+func test(r *http.Request) {
+	r.ParseForm()
+
+	for key, value := range r.Form {
+		fmt.Printf("%s = s%\n", key, value)
+	}
 }

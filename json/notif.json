@@ -1,0 +1,74 @@
+[  
+    {
+      "title": "Fatigue Check",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    },
+    {
+      "title": "Vision Check",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    },
+    {
+      "title": "Speech Check",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    },
+    {
+      "title": "Numbness Check",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    },
+    {
+      "title": "Pins & Needles",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    },
+    {
+      "title": "Cognitive Check",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    },	
+    {
+      "title": "Bladder Control Check",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    },
+    {	
+      "title": "Muscle Check",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    },
+    {
+      "title": "Mood Check",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    },
+    {
+      "title": "Memory Check",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    },
+    {
+      "title": "Balance Check",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    },
+    {
+      "title": "Stiffness Check",
+      "Body":             "Feeling more tired than last time?",
+	  "ExperienceID":     "@dnguyen1289/code-norm",
+	  "Category":         "@dnguyen1289/code-norm:rate"
+    }
+]
