@@ -26,7 +26,13 @@ type Payload struct {
 func NotifHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		data := Payload{
-			// fill struct
+			To:               "ExponentPushToken[9UQs5SDdw--zIpwg6hRok8]",
+			Badge:            0,
+			Title:            "Fatigue Check",
+			Body:             "Feeling more tired than last time?",
+			ExperienceID:     "@dnguyen1289/code-norm",
+			Category:         "@dnguyen1289/code-norm:rate",
+			ContentAvailable: true,
 		}
 		payloadBytes, err := json.Marshal(data)
 		if err != nil {
