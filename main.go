@@ -52,6 +52,12 @@ func main() {
 	//Get user's symptoms
 	router.HandleFunc("/getsymptoms", profile.SymptomSender(db, &CurrUser))
 
+	//Adds medical records
+	router.HandleFunc("/postmed", profile.MedHandler(db, &CurrUser))
+
+	//Gets medical records
+	router.HandleFunc("/getmed", profile.MedSender(db, &CurrUser))
+
 	port := os.Getenv("PORT") //Get port from .env file, we did not specify any port so this should return an empty string when tested locally
 	if port == "" {
 		port = "8000" //localhost

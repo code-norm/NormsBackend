@@ -93,6 +93,20 @@ func SignupHandler(db *sql.DB, u *User) http.HandlerFunc {
 			fmt.Println(err)
 			return
 		}
+
+		_, err = db.Query("INSERT INTO notif (username) VALUES(?)", newUser.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
+
+		_, err = db.Query("INSERT INTO medhistory (username) VALUES(?)", newUser.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+			return
+		}
 		fmt.Println("signup completed")
 		*u = newUser
 	}

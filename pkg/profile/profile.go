@@ -9,6 +9,15 @@ import (
 	"github.com/jjmarsha/NormsBackend/pkg/session"
 )
 
+type Med struct {
+	Name    string
+	Gender  string
+	Race    string
+	Age     int
+	Weight  int
+	History string
+}
+
 //SymptomHandler receives the symptoms chosen to add to table
 func SymptomHandler(db *sql.DB, u *session.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
@@ -202,4 +211,42 @@ func checkTrue(s session.Symptom) int {
 		return 1
 	}
 	return 0
+}
+
+func MedHandler(db *sql.DB, u *session.User) http.HandlerFunc {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		decoder := json.NewDecoder(r.Body)
+		var mD Med
+		err1 := decoder.Decode(mD)
+		if err1 != nil {
+			panic(err1)
+		}
+		_, err := db.Query("UPDATE medhistory SET name=?, gender=?, race=?, age=?, weight=?, history=? WHERE username = ?",
+			mD.Name, mD.Gender, mD.Race, mD.Age, mD.Weight, mD.History, u.Uname)
+		if err != nil {
+			// If there is any issue with inserting into the database, return a 500 error
+			fmt.Println(err)
+		}
+	}
+	return http.HandlerFunc(fn)
+}
+
+func MedSender(db *sql.DB, u *session.User) http.HandlerFunc {
+	fn := func(w http.ResponseWriter, r *http.Request) {
+		md := Med{}
+		row := db.QueryRow("SELECT name, gender, race, age, weight, history FROM medhistory WHERE username=?", u.Uname)
+		if err := row.Scan(&md.Name, &md.Gender, &md.Race, &md.Age, &md.Weight, &md.History); err != nil {
+			panic(err.Error())
+			return
+		}
+		js, err := json.Marshal(md)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(js)
+	}
+	return http.HandlerFunc(fn)
 }
