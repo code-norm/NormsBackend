@@ -62,8 +62,13 @@ func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 		// 	fmt.Fprintf(w, "Email already in used")
 		// 	return
 		// }
-		if rowExists("SELECT * FROM userinfo", db, &newUser) {
-			fmt.Fprintf(w, "Email or Username in use")
+		if rowExists("SELECT * FROM userinfo WHERE username=?", db, newUser.Uname) {
+			fmt.Fprintf(w, "Username in use")
+			return
+		}
+
+		if rowExists("SELECT * FROM userinfo WHERE email=?", db, newUser.Uemail) {
+			fmt.Fprintf(w, "Email in use")
 			return
 		}
 
@@ -180,10 +185,10 @@ func LogoutHandler(u *cL.User) http.HandlerFunc {
 	return http.HandlerFunc(fn)
 }
 
-func rowExists(query string, db *sql.DB, u *cL.User) bool {
+func rowExists(query string, db *sql.DB, entry string) bool {
 	var exists bool
 	query = fmt.Sprintf("SELECT exists (%s)", query)
-	err := db.QueryRow(query, u.Uname, u.Uemail).Scan(&exists)
+	err := db.QueryRow(query, entry).Scan(&exists)
 	if err != nil && err != sql.ErrNoRows {
 		fmt.Printf("error checking if row exist")
 	}
