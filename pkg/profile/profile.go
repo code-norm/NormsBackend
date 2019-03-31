@@ -6,23 +6,14 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/jjmarsha/NormsBackend/pkg/session"
+	cL "github.com/jjmarsha/NormsBackend/pkg/classes"
 )
 
-type Med struct {
-	Name    string
-	Gender  string
-	Race    string
-	Age     int
-	Weight  int
-	History string
-}
-
 //SymptomHandler receives the symptoms chosen to add to table
-func SymptomHandler(db *sql.DB, u *session.User) http.HandlerFunc {
+func SymptomHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		decoder := json.NewDecoder(r.Body)
-		var symptoms [12]session.Symptom
+		var symptoms [12]cL.Symptom
 		err1 := decoder.Decode(&symptoms)
 		if err1 != nil {
 			panic(err1)
@@ -190,7 +181,8 @@ func SymptomHandler(db *sql.DB, u *session.User) http.HandlerFunc {
 	return http.HandlerFunc(fn)
 }
 
-func SymptomSender(db *sql.DB, u *session.User) http.HandlerFunc {
+//SymptomSender handles the sending of symptoms to app
+func SymptomSender(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 
 		js, err := json.Marshal(u.Symp)
@@ -206,17 +198,19 @@ func SymptomSender(db *sql.DB, u *session.User) http.HandlerFunc {
 	return http.HandlerFunc(fn)
 }
 
-func checkTrue(s session.Symptom) int {
+//this function is mainly to check if the symptom is checked or not
+func checkTrue(s cL.Symptom) int {
 	if s.Checked == "true" {
 		return 1
 	}
 	return 0
 }
 
-func MedHandler(db *sql.DB, u *session.User) http.HandlerFunc {
+//MedHandler recieves data from app for medical records
+func MedHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		decoder := json.NewDecoder(r.Body)
-		var mD Med
+		var mD cL.Med
 		err1 := decoder.Decode(&mD)
 		if err1 != nil {
 			panic(err1)
@@ -231,9 +225,10 @@ func MedHandler(db *sql.DB, u *session.User) http.HandlerFunc {
 	return http.HandlerFunc(fn)
 }
 
-func MedSender(db *sql.DB, u *session.User) http.HandlerFunc {
+//MedSender sends medical info to app
+func MedSender(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
-		md := Med{}
+		md := cL.Med{}
 		row := db.QueryRow("SELECT name, gender, race, age, weight, history FROM medhistory WHERE username=?", u.Uname)
 		if err := row.Scan(&md.Name, &md.Gender, &md.Race, &md.Age, &md.Weight, &md.History); err != nil {
 			panic(err.Error())

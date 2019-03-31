@@ -8,6 +8,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	cL "github.com/jjmarsha/NormsBackend/pkg/classes"
 	"github.com/jjmarsha/NormsBackend/pkg/profile"
 	"github.com/jjmarsha/NormsBackend/pkg/session"
 )
@@ -33,7 +34,7 @@ func main() {
 
 	fmt.Println("Server connected")
 
-	CurrUser := session.User{
+	CurrUser := cL.User{
 		Uname:  "NULL",
 		Uemail: "NULL",
 	}

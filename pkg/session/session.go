@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
+	cL "github.com/jjmarsha/NormsBackend/pkg/classes"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -18,30 +19,12 @@ func IsEmpty(data string) bool {
 	}
 }
 
-//User info, will add more
-type User struct {
-	Uname  string
-	Uemail string
-	Symp   [12]Symptom
-}
-
-type Usertemp struct {
-	Username string
-	Email    string
-}
-
-type Symptom struct {
-	Name          string
-	Checked       string
-	Notifications string
-}
-
 //SignupHandler handles signup
-func SignupHandler(db *sql.DB, u *User) http.HandlerFunc {
+func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("signup request incoming")
 		r.ParseForm()
-		newUser := User{
+		newUser := cL.User{
 			Uname:  r.FormValue("username"), // Data from the form
 			Uemail: r.FormValue("email"),    // Data from the form
 		}
@@ -115,7 +98,7 @@ func SignupHandler(db *sql.DB, u *User) http.HandlerFunc {
 }
 
 //LoginHandler handles login request
-func LoginHandler(db *sql.DB, u *User) http.HandlerFunc {
+func LoginHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
 
@@ -156,7 +139,7 @@ func LoginHandler(db *sql.DB, u *User) http.HandlerFunc {
 		u.Uemail = email
 		u.Uname = username
 
-		userTemp := Usertemp{
+		userTemp := cL.Usertemp{
 			Username: username,
 			Email:    email,
 		}
@@ -173,7 +156,7 @@ func LoginHandler(db *sql.DB, u *User) http.HandlerFunc {
 	return http.HandlerFunc(fn)
 }
 
-func LogoutHandler(u *User) http.HandlerFunc {
+func LogoutHandler(u *cL.User) http.HandlerFunc {
 	u.Uname = "NULL"
 	u.Uemail = "NULL"
 	fn := func(w http.ResponseWriter, r *http.Request) {
