@@ -25,6 +25,11 @@ type User struct {
 	Symp   [12]Symptom
 }
 
+type Usertemp struct {
+	Username string
+	email    string
+}
+
 type Symptom struct {
 	Name          string
 	Checked       string
@@ -137,7 +142,12 @@ func LoginHandler(db *sql.DB, u *User) http.HandlerFunc {
 		u.Uemail = email
 		u.Uname = username
 
-		js, err := json.Marshal(u)
+		userTemp := Usertemp{
+			Username: username,
+			email:    email,
+		}
+
+		js, err := json.Marshal(userTemp)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
