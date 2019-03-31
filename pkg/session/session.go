@@ -101,7 +101,6 @@ func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 			fmt.Println(err)
 			return
 		}
-		fmt.Println("signup completed")
 		*u = newUser
 
 		surv := u.Uname + "survey"
