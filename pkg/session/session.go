@@ -113,7 +113,7 @@ func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 			return
 		}
 
-		js, err := json.Marshal(newUser.Uname)
+		js, err := json.Marshal(newUser)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
