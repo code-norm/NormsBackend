@@ -23,7 +23,7 @@ func IsEmpty(data string) bool {
 func SignupHandler(db *sql.DB, u *cL.User) http.HandlerFunc {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("signup request incoming")
-		test(r)
+		fmt.Println(r.Form)
 		r.ParseForm()
 		newUser := cL.User{
 			Uname:  r.FormValue("username"), // Data from the form
