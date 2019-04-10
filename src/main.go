@@ -16,7 +16,8 @@ func main() {
 	router := mux.NewRouter()
 
 	fmt.Println("Starting server...")
-
+	
+	//Change this user:pass to an environmental variable
 	db, err := sql.Open("mysql", "root:root@tcp(35.202.9.105:3306)/users")
 	if err != nil {
 		panic(err.Error()) // proper error handling instead of panic
